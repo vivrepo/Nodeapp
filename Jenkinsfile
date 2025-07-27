@@ -2,8 +2,8 @@ pipeline{
     agent any
 
     environment{
-        EC2_HOST = ""
-        SSH_CREDENTIAL_ID = ""
+        EC2_HOST = "13.232.35.185"        //public ip of ec2 server
+        SSH_CREDENTIAL_ID = "ec2-key"     
         REMOTE_USER = "ubuntu"
         REMOTE_PATH = "/home/ubuntu/app"
         WEB_ROOT = "/var/www/html" 
@@ -23,7 +23,7 @@ pipeline{
         stage("Deploy"){
             step{
                 echo "Starting Deployment"
-                sshagent(credential: [env.SSH_CREDENTIAL_ID]){
+                sshagent(credentials: [env.SSH_CREDENTIAL_ID]){
                     sh"""
                         echo "Creating Remote Directory"
                         ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${EC2_HOST} 'mkdir -p ${REMOTE_PATH}'
